@@ -1,0 +1,51 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Conda
+.env
+.venv
+
+# VSCode
+.vscode/
+
+# JetBrains
+.idea/
+
+# Mac/Linux
+.DS_Store
+
+# Resultados HPC
+outputs/*
+results/*
+
+# Mantener directorios vacíos
+!outputs/.gitkeep
+!results/.gitkeep
+
+# Logs SLURM
+*.out
+*.err
+
+# Profiling
+*.prof
+
+# Archivos temporales
+*.tmp
+*.log
+
+# PDFs compilados
+report/build/
+
+# Latex auxiliares
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.lot
+*.toc
+*.synctex.gz
