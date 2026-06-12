@@ -173,3 +173,63 @@ def distributed_WtW(Wi, grid):
     )
 
     return result
+
+def distributed_fro_norm(X_local, grid):
+    """
+    Calcula la norma de Frobenius global de una matriz distribuida.
+
+    Cada proceso aporta la suma de cuadrados de su bloque local.
+    """
+
+    local_sq = np.array(
+        np.sum(X_local * X_local),
+        dtype=np.float64
+    )
+
+    global_sq = np.array(
+        0.0,
+        dtype=np.float64
+    )
+
+    grid.comm.Allreduce(
+        local_sq,
+        global_sq,
+        op=MPI.SUM
+    )
+
+    return float(
+        np.sqrt(global_sq)
+    )
+    
+def distributed_error(Aij, Wi, Hj, grid):
+    """
+    Calcula
+
+        ||A - WHᵀ||_F
+
+    de forma distribuida.
+    """
+
+    residual = (
+        Aij - Wi @ Hj.T
+    )
+
+    local_sq = np.array(
+        np.sum(residual * residual),
+        dtype=np.float64
+    )
+
+    global_sq = np.array(
+        0.0,
+        dtype=np.float64
+    )
+
+    grid.comm.Allreduce(
+        local_sq,
+        global_sq,
+        op=MPI.SUM
+    )
+
+    return float(
+        np.sqrt(global_sq)
+    )
