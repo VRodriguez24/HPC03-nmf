@@ -6,6 +6,8 @@ class Grid:
     """
     Representa la grilla lógica de procesos MPI de tamaño pr x pc.
     """
+    
+    comm: object
 
     rank: int
     size: int
@@ -21,29 +23,27 @@ class Grid:
 
     @property
     def is_row_root(self):
-        """Proceso raíz dentro de cada fila."""
+        """Proceso raíz dentro de cada fila"""
         return self.j == 0
 
     @property
     def is_col_root(self):
-        """Proceso raíz dentro de cada columna."""
+        """Proceso raíz dentro de cada columna"""
         return self.i == 0
 
     @property
     def is_global_root(self):
-        """Proceso raíz global."""
+        """Proceso raíz global"""
         return self.rank == 0
 
 
 def local_range(global_size, num_parts, part_id):
     """
-    Divide un rango [0, global_size) en num_parts bloques iguales.
+    Divide un rango [0, global_size) en num_parts bloques iguales
     Retorna:
         start, end, local_size
     """
-
     local_size = global_size // num_parts
-
     start = part_id * local_size
     end = start + local_size
 
@@ -53,7 +53,7 @@ def local_range(global_size, num_parts, part_id):
 def create_grid(comm, pr, pc):
     """
     Construye la grilla lógica MPI y los comunicadores
-    por filas y columnas.
+    por filas y columnas
     """
 
     rank = comm.Get_rank()
@@ -78,6 +78,7 @@ def create_grid(comm, pr, pc):
     )
 
     return Grid(
+        comm=comm,
         rank=rank,
         size=size,
 

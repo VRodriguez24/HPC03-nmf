@@ -67,3 +67,109 @@ def distributed_ATW(Aij, Wi, grid):
     )
 
     return result
+
+def distributed_HtH(Hj, grid):
+    """
+    Calcula H.T @ H de forma distribuida.
+
+    Como cada bloque Hj está replicado en todas las filas de la grilla,
+    solo los procesos de la primera fila (i == 0) contribuyen para
+    evitar duplicar términos.
+
+    El resultado queda disponible en todos los procesos.
+    """
+
+    k = Hj.shape[1]
+
+    if grid.i == 0:
+        local = (
+            Hj.T @ Hj
+        ).astype(np.float32)
+    else:
+        local = np.zeros(
+            (k, k),
+            dtype=np.float32
+        )
+
+    result = np.empty(
+        (k, k),
+        dtype=np.float32
+    )
+
+    grid.row_comm.Get_parent()
+
+    grid.row_comm.Barrier()
+
+    # Se usa el comunicador global implícito a partir de row/col no existe aquí,
+    # por eso necesitamos que Grid tenga también comm global.
+    
+def distributed_HtH(Hj, grid):
+    """
+    Calcula H.T @ H de forma distribuida.
+
+    Como cada bloque Hj está replicado en todas las filas de la grilla,
+    solo los procesos de la primera fila contribuyen para evitar duplicación.
+
+    El resultado queda disponible en todos los procesos.
+    """
+
+    k = Hj.shape[1]
+
+    if grid.i == 0:
+        local = (
+            Hj.T @ Hj
+        ).astype(np.float32)
+    else:
+        local = np.zeros(
+            (k, k),
+            dtype=np.float32
+        )
+
+    result = np.empty(
+        (k, k),
+        dtype=np.float32
+    )
+
+    grid.comm.Allreduce(
+        local,
+        result,
+        op=MPI.SUM
+    )
+
+    return result
+
+
+def distributed_WtW(Wi, grid):
+    """
+    Calcula W.T @ W de forma distribuida.
+
+    Como cada bloque Wi está replicado en todas las columnas de la grilla,
+    solo los procesos de la primera columna contribuyen para evitar duplicación.
+
+    El resultado queda disponible en todos los procesos.
+    """
+
+    k = Wi.shape[1]
+
+    if grid.j == 0:
+        local = (
+            Wi.T @ Wi
+        ).astype(np.float32)
+    else:
+        local = np.zeros(
+            (k, k),
+            dtype=np.float32
+        )
+
+    result = np.empty(
+        (k, k),
+        dtype=np.float32
+    )
+
+    grid.comm.Allreduce(
+        local,
+        result,
+        op=MPI.SUM
+    )
+
+    return result
