@@ -161,13 +161,9 @@ def generate_A_block(m, n, k_true, seed, grid):
             seed * 1000 + global_r
         )
 
-        noise_row_full = rng_noise.random(
-            n
-        ).astype(np.float32)
+        noise_row_full = rng_noise.random(n)
 
-        noise[local_r, :] = noise_row_full[
-            col_start:col_end
-        ]
+        noise[local_r, :] = noise_row_full[col_start:col_end]
 
     Aij += (
         0.01 * noise

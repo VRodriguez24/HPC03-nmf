@@ -39,10 +39,27 @@ class Grid:
 
 def local_range(global_size, num_parts, part_id):
     """
-    Divide un rango [0, global_size) en num_parts bloques iguales
+    Divide un rango [0, global_size) en num_parts bloques iguales.
+
+    Esta implementación asume divisibilidad exacta, como las
+    configuraciones oficiales de la tarea.
+
     Retorna:
         start, end, local_size
     """
+    if num_parts <= 0:
+        raise ValueError(f"num_parts debe ser positivo, recibido {num_parts}")
+
+    if part_id < 0 or part_id >= num_parts:
+        raise ValueError(
+            f"part_id={part_id} fuera de rango para num_parts={num_parts}"
+        )
+
+    if global_size % num_parts != 0:
+        raise ValueError(
+            f"global_size={global_size} no es divisible por num_parts={num_parts}"
+        )
+
     local_size = global_size // num_parts
     start = part_id * local_size
     end = start + local_size

@@ -17,14 +17,6 @@ __pycache__/
 # Mac/Linux
 .DS_Store
 
-# Resultados HPC
-outputs/*
-results/*
-
-# Mantener directorios vacíos
-!outputs/.gitkeep
-!results/.gitkeep
-
 # Logs SLURM
 *.out
 *.err
@@ -38,6 +30,7 @@ results/*
 
 # PDFs compilados
 report/build/
+docs/tarea03.pdf
 
 # Latex auxiliares
 *.aux
