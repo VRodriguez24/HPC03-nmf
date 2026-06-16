@@ -25,12 +25,18 @@ submit_run() {
     local job_name="nmf_p${pr}x${pc}_t${threads}_${tag}"
     local csv="${CSV_DIR}/${job_name}.csv"
 
+    if [ "${ntasks_per_socket}" -gt 0 ]; then
+        SOCKET_ARG="--ntasks-per-socket=${ntasks_per_socket}"
+    else
+        SOCKET_ARG=""
+    fi
+
     sbatch \
         --job-name="${job_name}" \
         --nodes="${nodes}" \
         --ntasks="${ntasks}" \
         --ntasks-per-node="${ntasks_per_node}" \
-        --ntasks-per-socket="${ntasks_per_socket}" \
+        ${SOCKET_ARG} \
         --cpus-per-task="${threads}" \
         --export=ALL,PR="${pr}",PC="${pc}",M="${M}",N="${N}",K="${K}",SEED="${SEED}",TOL="${TOL}",MAX_ITER="${MAX_ITER}",CSV="${csv}" \
         slurm/run_nmf.sh
