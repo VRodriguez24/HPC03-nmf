@@ -8,9 +8,9 @@ K=${K:-20}
 SEED=${SEED:-42}
 TOL=${TOL:-1e-4}
 MAX_ITER=${MAX_ITER:-20}
-CSV=${CSV:-results/nmf_results.csv}
+CSV_DIR=${CSV_DIR:-results/jobs}
 
-mkdir -p outputs results
+mkdir -p outputs results "${CSV_DIR}"
 
 submit_run() {
     local pr=$1
@@ -23,6 +23,7 @@ submit_run() {
     local ntasks=$((pr * pc))
     local ntasks_per_node=$(((ntasks + nodes - 1) / nodes))
     local job_name="nmf_p${pr}x${pc}_t${threads}_${tag}"
+    local csv="${CSV_DIR}/${job_name}.csv"
 
     sbatch \
         --job-name="${job_name}" \
@@ -31,7 +32,7 @@ submit_run() {
         --ntasks-per-node="${ntasks_per_node}" \
         --ntasks-per-socket="${ntasks_per_socket}" \
         --cpus-per-task="${threads}" \
-        --export=ALL,PR="${pr}",PC="${pc}",M="${M}",N="${N}",K="${K}",SEED="${SEED}",TOL="${TOL}",MAX_ITER="${MAX_ITER}",CSV="${CSV}" \
+        --export=ALL,PR="${pr}",PC="${pc}",M="${M}",N="${N}",K="${K}",SEED="${SEED}",TOL="${TOL}",MAX_ITER="${MAX_ITER}",CSV="${csv}" \
         slurm/run_nmf.sh
 }
 
@@ -50,7 +51,7 @@ submit_grid() {
 }
 
 echo "Submitting official NMF experiment matrix"
-echo "CSV: ${CSV}"
+echo "CSV directory: ${CSV_DIR}"
 
 submit_grid 1 1
 submit_grid 2 1
