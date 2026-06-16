@@ -11,7 +11,7 @@
 #SBATCH --output=outputs/%x_%j.out
 #SBATCH --error=outputs/%x_%j.err
 
-set -euo pipefail
+set -eo pipefail
 
 PR=${PR:-1}
 PC=${PC:-1}
