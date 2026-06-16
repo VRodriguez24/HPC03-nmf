@@ -32,7 +32,8 @@ fi
 
 mkdir -p outputs results
 
-source ~/miniconda3/bin/activate iic3533
+eval "$($HOME/miniconda3/_conda shell.bash hook)"
+conda activate iic3533
 
 export OMP_NUM_THREADS="${SLURM_CPUS_PER_TASK}"
 export OPENBLAS_NUM_THREADS="${SLURM_CPUS_PER_TASK}"
