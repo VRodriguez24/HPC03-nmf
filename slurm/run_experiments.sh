@@ -40,13 +40,13 @@ submit_grid() {
     local pr=$1
     local pc=$2
 
-    submit_run "${pr}" "${pc}" 1 1 1 "official"
-    submit_run "${pr}" "${pc}" 2 1 1 "official"
+    submit_run "${pr}" "${pc}" 1 1 0 "official"
+    submit_run "${pr}" "${pc}" 2 1 0 "official"
 
     if [ $((pr * pc * 4)) -le 8 ]; then
-        submit_run "${pr}" "${pc}" 4 1 1 "official"
+        submit_run "${pr}" "${pc}" 4 1 0 "official"
     else
-        submit_run "${pr}" "${pc}" 4 2 1 "official"
+        submit_run "${pr}" "${pc}" 4 2 0 "official"
     fi
 }
 
