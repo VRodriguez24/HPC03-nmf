@@ -19,7 +19,7 @@ K=${K:-20}
 SEED=${SEED:-42}
 TOL=${TOL:-1e-4}
 MAX_ITER=${MAX_ITER:-20}
-CSV=${CSV:-results/nmf_results.csv}
+CSV=${CSV:-}
 
 EXPECTED_TASKS=$((PR * PC))
 
@@ -50,10 +50,11 @@ echo "grid             : ${PR} x ${PC}"
 echo "matrix           : ${M} x ${N}"
 echo "rank_k           : ${K}"
 echo "max_iter         : ${MAX_ITER}"
-echo "csv              : ${CSV}"
+echo "csv              : ${CSV:-<none>}"
 echo "============================================================"
 
-mpirun -n "${SLURM_NTASKS}" python src/nmf_distributed.py \
+CMD=(
+    mpirun -n "${SLURM_NTASKS}" python src/nmf_distributed.py
     --pr "${PR}" \
     --pc "${PC}" \
     --m "${M}" \
@@ -61,5 +62,11 @@ mpirun -n "${SLURM_NTASKS}" python src/nmf_distributed.py \
     --k "${K}" \
     --seed "${SEED}" \
     --tol "${TOL}" \
-    --max_iter "${MAX_ITER}" \
-    --csv "${CSV}"
+    --max_iter "${MAX_ITER}"
+)
+
+if [ -n "${CSV}" ]; then
+    CMD+=(--csv "${CSV}")
+fi
+
+"${CMD[@]}"

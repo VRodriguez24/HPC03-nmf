@@ -11,7 +11,6 @@ def solve_regularized_normal_eq(gram, rhs, reg=REGULARIZATION):
 
     scale = float(np.trace(gram64)) / k
     ridge = reg * max(scale, 1.0)
-
     lhs = gram64 + ridge * np.eye(
         k,
         dtype=np.float64
