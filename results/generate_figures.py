@@ -69,7 +69,7 @@ def fig1_total_time(rows, out):
 
     ax.set_xlabel("Configuracion de grid (pr x pc)")
     ax.set_ylabel("Tiempo total (s)")
-    ax.set_title("Figura 1: Tiempo total de ejecucion por configuracion y numero de threads")
+    pass  # title added in LaTeX
     ax.set_xticks(x)
     ax.set_xticklabels(labels)
     ax.legend()
@@ -109,7 +109,7 @@ def fig2_speedup(rows, out):
     ax.plot(procs_ideal, procs_ideal, "--", color="gray", alpha=0.5, label="Speedup ideal")
     ax.set_xlabel("Numero de procesos MPI (pr x pc)")
     ax.set_ylabel("Speedup (T_base / T_config)")
-    ax.set_title("Figura 2: Speedup relativo a la configuracion base (1x1, T=1)")
+    pass  # title added in LaTeX
     ax.legend()
     ax.grid(alpha=0.3)
     ax.set_xscale("log", base=2)
@@ -126,7 +126,7 @@ def fig3_grid_shape(rows, out):
     for r in official:
         if int(r["pr"]) * int(r["pc"]) == 4 and int(r["threads"]) == 4:
             configs_4.append(r)
-    configs_4.sort(key=lambda r: (int(r["pr"]), int(r["pc"])))
+    configs_4.sort(key=lambda r: val(r, "elapsed_sec"))
 
     labels = [f"{r['pr']}x{r['pc']}" for r in configs_4]
     totals = [val(r, "elapsed_sec") for r in configs_4]
@@ -149,7 +149,7 @@ def fig3_grid_shape(rows, out):
     ax1.set_xlabel("Configuracion de grid (pr x pc)")
     ax1.set_ylabel("Tiempo total (s)")
     ax2.set_ylabel("Tiempo por iteracion (s)")
-    ax1.set_title("Figura 3: Efecto de la forma del grid (pr x pc = 4, T = 4)")
+    pass  # title added in LaTeX
     ax1.set_xticks(x)
     ax1.set_xticklabels(labels)
     ax1.legend(loc="upper left")
@@ -184,15 +184,15 @@ def fig4_profile(rows, out):
 
     ax_pie.pie(pcts, labels=None, autopct="%1.1f%%", colors=colors, startangle=90, pctdistance=0.8)
     ax_pie.legend(labels, loc="center left", bbox_to_anchor=(-0.3, 0.5), fontsize=9)
-    ax_pie.set_title("Distribucion del tiempo (1x1, T=1)")
+    pass  # title added in LaTeX
 
     ax_bar.barh(labels[::-1], times[::-1], color=colors[::-1], edgecolor="white")
     ax_bar.set_xlabel("Tiempo (s)")
-    ax_bar.set_title("Tiempo absoluto por operacion (1x1, T=1)")
+    pass  # title added in LaTeX
     for i, (t, label) in enumerate(zip(times[::-1], labels[::-1])):
         ax_bar.text(t + 0.1, i, f"{t:.2f}s", va="center", fontsize=9)
 
-    plt.suptitle("Figura 4: Perfil de ejecucion - Cuello de botella", fontsize=14, y=1.02)
+    pass  # title added in LaTeX
     plt.tight_layout()
     fig.savefig(out, dpi=150, bbox_inches="tight")
     plt.close(fig)
@@ -219,7 +219,7 @@ def fig5_numa(rows, out):
     fig, ax = plt.subplots(figsize=(7, 4))
     bars = ax.bar(labels, times, color=colors, edgecolor="white", width=0.5)
     ax.set_ylabel("Tiempo total (s)")
-    ax.set_title("Figura 5: Efecto de la afinidad NUMA (pr=2, pc=1, T=2)")
+    pass  # title added in LaTeX
     ax.grid(axis="y", alpha=0.3)
 
     for bar, t in zip(bars, times):
@@ -263,7 +263,7 @@ def fig6_heatmap(rows, out):
     ax.set_xticklabels([f"pc={pc}" for pc in pcols])
     ax.set_yticks(range(len(prows)))
     ax.set_yticklabels([f"pr={pr}" for pr in prows])
-    ax.set_title("Figura 6: Mapa de calor del tiempo total (s) - T=4")
+    pass  # title added in LaTeX
 
     for ri in range(len(prows)):
         for ci in range(len(pcols)):
